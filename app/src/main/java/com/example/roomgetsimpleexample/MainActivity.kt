@@ -49,19 +49,22 @@ class MainActivity : AppCompatActivity() {
                 Log.d("CODE", "Error")
             }
 
+
             override fun onResponse(
                 call: Call<News>,
                 response: Response<News>
             ) {
                 val news: News? = response.body()
 
+
                 news!!.articles.forEach {
                     Log.d("CODE", "${it}")
                     CoroutineScope(Dispatchers.IO).launch {
-                        db.artDao().insertAll( it )
-                    }
+                        val a = db.artDao().getAll().toMutableList()
+                            if ( check(a) )
+                                db.artDao().insertAll( it )
+                    }//
                 }
-
             }
         })
     }//getNews
@@ -78,4 +81,11 @@ class MainActivity : AppCompatActivity() {
         newsList.layoutManager = LinearLayoutManager(this@MainActivity)
 
     }
+}
+fun check (list1:MutableList<Article>):Boolean{
+    for (i in  0 until list1.size )
+        for (j in 0 until list1.size)
+            if (i!=j && list1[i] == list1[j])
+                return true
+    return false
 }
