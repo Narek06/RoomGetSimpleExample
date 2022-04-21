@@ -60,8 +60,8 @@ class MainActivity : AppCompatActivity() {
                 news!!.articles.forEach {
                     Log.d("CODE", "${it}")
                     CoroutineScope(Dispatchers.IO).launch {
-                        val a = db.artDao().getAll().toMutableList()
-                            if ( check(a) )
+                       // val a = db.artDao().getAll().toMutableList()
+                            if ( !(db.artDao().isNotExists(it.title) ) )
                                 db.artDao().insertAll( it )
                     }//
                 }

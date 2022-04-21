@@ -13,6 +13,9 @@ interface ArticleDao {
     @Insert
      fun insertAll(vararg arts: Article?)
 
+     @Query("SELECT NOT EXISTS(SELECT * FROM articles WHERE title = :name )")
+     fun isNotExists(name:String?):Boolean
+
     @Delete
     fun delete(art: Article)
 }
